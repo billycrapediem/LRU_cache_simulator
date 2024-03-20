@@ -17,7 +17,7 @@ void TestCyclicAccess(int reapeatTime){
 
 void TestSawtoothAccess(int reapeatTime){
     sim_start(6,3,11);
-    long long finalVal = 10000000000 * 4;
+    long long finalVal = 1000000 * 4;
     long long traverseTime = reapeatTime;
     for(long long j = 0; j < traverseTime; j ++){
         for(long long i = 0; i < finalVal; i +=4){
