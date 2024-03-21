@@ -34,5 +34,5 @@ void TestSawtoothAccess(int reapeatTime){
 
 
 int main(void) {
-    TestCyclicAccess(2);
+    TestSawtoothAccess(10);
 }
