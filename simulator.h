@@ -7,32 +7,24 @@
 typedef struct{
     struct Node* prev;
     struct Node* next;
-    long long pos;
-} Node;
-typedef struct{
     long long tag;
-    int valid;
-    Node* pos;
-} cacheLine;
+} Node;
 
 typedef struct LRUCache {
     Node* head;
     Node* tail;
+    long long capacity;
+    long long size;
 } LRUCache;
 
-typedef  struct {
-    cacheLine** lines;
-    LRUCache * LRU;
-} cacheSet;
-
 typedef struct{
-    cacheSet** sets;
+    LRUCache** sets;
     int B;
     int S;
     int W;
     long long indexBit;
 } cache;
-LRUCache* createCache(void);
+LRUCache* createCache(long long capacity);
 
 void sim_start(int B, int S, int W);
 void sim_access(long long acc);
