@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
-#include <stdint.h>
-
+#include "simulator.h"
 typedef struct {
     uint64_t tag;
     bool valid;

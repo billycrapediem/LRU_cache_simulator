@@ -1,6 +1,5 @@
 #include <stdio.h>
-#include "simulator.h"
-
+#include "MRU/simulator.h"
 
 void TestCyclicAccess(int reapeatTime){
     sim_start(6,3,11);

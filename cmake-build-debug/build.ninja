@@ -55,11 +55,11 @@ build CMakeFiles/cache_simulator.dir/main.c.o: C_COMPILER__cache_simulator_unsca
   OBJECT_DIR = CMakeFiles/cache_simulator.dir
   OBJECT_FILE_DIR = CMakeFiles/cache_simulator.dir
 
-build CMakeFiles/cache_simulator.dir/simulator.c.o: C_COMPILER__cache_simulator_unscanned_Debug /Users/bryanzhang/DEV/cache_simulator/simulator.c || cmake_object_order_depends_target_cache_simulator
-  DEP_FILE = CMakeFiles/cache_simulator.dir/simulator.c.o.d
+build CMakeFiles/cache_simulator.dir/MRU/MRU_simulator.c.o: C_COMPILER__cache_simulator_unscanned_Debug /Users/bryanzhang/DEV/cache_simulator/MRU/MRU_simulator.c || cmake_object_order_depends_target_cache_simulator
+  DEP_FILE = CMakeFiles/cache_simulator.dir/MRU/MRU_simulator.c.o.d
   FLAGS = -g -std=gnu99 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk -fcolor-diagnostics -pedantic -Wall -Werror
   OBJECT_DIR = CMakeFiles/cache_simulator.dir
-  OBJECT_FILE_DIR = CMakeFiles/cache_simulator.dir
+  OBJECT_FILE_DIR = CMakeFiles/cache_simulator.dir/MRU
 
 
 # =============================================================================
@@ -69,7 +69,7 @@ build CMakeFiles/cache_simulator.dir/simulator.c.o: C_COMPILER__cache_simulator_
 #############################################
 # Link the executable cache_simulator
 
-build cache_simulator: C_EXECUTABLE_LINKER__cache_simulator_Debug CMakeFiles/cache_simulator.dir/main.c.o CMakeFiles/cache_simulator.dir/simulator.c.o
+build cache_simulator: C_EXECUTABLE_LINKER__cache_simulator_Debug CMakeFiles/cache_simulator.dir/main.c.o CMakeFiles/cache_simulator.dir/MRU/MRU_simulator.c.o
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk
   OBJECT_DIR = CMakeFiles/cache_simulator.dir
   POST_BUILD = :
