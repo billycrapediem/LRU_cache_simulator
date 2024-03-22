@@ -7,6 +7,8 @@ set(CMAKE_C_STANDARD 99)
 add_executable(cache_simulator main.c
         MRU/simulator.c
         MRU/simulator.h
+        MRU/MRUSplay.c
+        MRU/MRUSplay.h
 )
 
 # Add compile options for your executable target

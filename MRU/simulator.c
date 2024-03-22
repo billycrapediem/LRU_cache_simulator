@@ -1,41 +1,50 @@
 #include <stdlib.h>
-#include <stdbool.h>
 #include "simulator.h"
+#include "stdio.h"
 typedef struct {
-    uint64_t tag;
-    bool valid;
-    uint64_t last_used;
+    long long tag;
+    int valid;
+    long long last_used;
 } CacheLine; // Represents a single line (or slot) within a cache set
 
 typedef struct {
     CacheLine* lines;
+    long long size;
 } CacheSet;// Represents a set within the cache
 
 typedef struct {
     CacheSet* sets;
-    uint64_t access_count;
-    uint64_t miss_count;
-    uint64_t time;
+    long long access_count;
+    int miss_count;
+    long long time;
     int B, S, W;
-    unsigned int CACHE_LINES;
-    unsigned int SETS;
+    long long CACHE_LINES;
+    long long SETS;
 } Cache;
 
 Cache cache; // Represents the entire cache
 
-unsigned int getSetIndex(uint64_t address) {
+long long getSetIndex(long long address) {
     return (address >> cache.B) & (cache.SETS - 1);
 }
 
-uint64_t getTag(uint64_t address) {
+long long getTag(long long address) {
     return address >> (cache.B + cache.S);
 }
 
-int findMRULineIndex(CacheSet *set) {
-    uint64_t max_time = 0;
-    int mru_index = 0;
-    for (unsigned int i = 0; i < cache.CACHE_LINES; i++) {
-        if (set->lines[i].last_used > max_time) {
+long long findMRULineIndex(CacheSet *set) {
+    long long max_time = 0;
+    long long mru_index = -1;
+    if(cache.CACHE_LINES > set->size){
+        set->size ++;
+        for(long long i = 0; i < cache.CACHE_LINES; i ++){
+            if(!set->lines[i].valid){
+                return i;
+            }
+        }
+    }
+    for (long long i = 0; i < cache.CACHE_LINES; i++) {
+        if (set->lines[i].last_used > max_time ) {
             max_time = set->lines[i].last_used;
             mru_index = i;
         }
@@ -51,47 +60,49 @@ void sim_start(int B, int S, int W) {
     cache.SETS = (1 << S);
 
     cache.sets = (CacheSet*)malloc(cache.SETS * sizeof(CacheSet));
-    for (unsigned int i = 0; i < cache.SETS; i++) {
+    for (long long int i = 0; i < cache.SETS; i++) {
         cache.sets[i].lines = (CacheLine*)malloc(cache.CACHE_LINES * sizeof(CacheLine));
-        for (unsigned int j = 0; j < cache.CACHE_LINES; j++) {
-            cache.sets[i].lines[j].valid = false;
+        for (long long int j = 0; j < cache.CACHE_LINES; j++) {
+            cache.sets[i].lines[j].valid = 0;
             cache.sets[i].lines[j].tag = 0;
             cache.sets[i].lines[j].last_used = 0;
         }
+        cache.sets[i].size = 0;
     }
     cache.access_count = 0;
     cache.miss_count = 0;
     cache.time = 0;
 }
 
-void sim_access(long long acc) {
-    uint64_t address = (uint64_t)acc;
+int sim_access(long long acc) {
+    long long address = acc;
     cache.access_count++;
     cache.time++;
 
-    unsigned int setIndex = getSetIndex(address);
-    uint64_t tag = getTag(address);
+    long long int setIndex = getSetIndex(address);
+    long long tag = getTag(address);
 
     CacheSet *set = &cache.sets[setIndex];
 
     for (unsigned int i = 0; i < cache.CACHE_LINES; i++) {
         if (set->lines[i].valid && set->lines[i].tag == tag) {
             set->lines[i].last_used = cache.time;
-            return; // Hit
+            return cache.miss_count; // Hit
         }
     }
 
     // Miss
     cache.miss_count++;
-    int replaceIndex = findMRULineIndex(set);
-    set->lines[replaceIndex].valid = true;
+    long long replaceIndex = findMRULineIndex(set);
+    set->lines[replaceIndex].valid = 1;
     set->lines[replaceIndex].tag = tag;
     set->lines[replaceIndex].last_used = cache.time;
+    return cache.miss_count;
 }
 
 int sim_finish(void) {
     int misses = cache.miss_count;
-    for (unsigned int i = 0; i < cache.SETS; i++) {
+    for (long long i = 0; i < cache.SETS; i++) {
         free(cache.sets[i].lines);
     }
     free(cache.sets);
