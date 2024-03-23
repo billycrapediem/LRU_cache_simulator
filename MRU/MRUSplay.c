@@ -44,7 +44,7 @@ void splay_sim_start(int B, int S, int W) {
 }
 
 
-int splay_sim_access(long long acc) {
+void splay_sim_access(long long acc) {
     long long index = (acc >> globalCache->B) & (globalCache->indexBit);
     long long tag = acc >> (globalCache->B + globalCache->S);
     LRUCache* LRU = globalCache->sets[index];
@@ -102,7 +102,6 @@ int splay_sim_access(long long acc) {
             LRU->head = curr;
         }
     }
-    return missCount;
 }
 // return the number of misses
 int splay_sim_finish(void) {

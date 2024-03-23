@@ -27,6 +27,6 @@ typedef struct{
 LRUCache* createCache(long long capacity);
 
 void splay_sim_start(int B, int S, int W);
-int splay_sim_access(long long acc);
+void splay_sim_access(long long acc);
 int splay_sim_finish(void);
 #endif //CACHE_SIMULATOR_MRUSPLAY_H

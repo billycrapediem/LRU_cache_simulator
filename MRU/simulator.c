@@ -74,7 +74,7 @@ void sim_start(int B, int S, int W) {
     cache.time = 0;
 }
 
-int sim_access(long long acc) {
+void sim_access(long long acc) {
     long long address = acc;
     cache.access_count++;
     cache.time++;
@@ -87,7 +87,7 @@ int sim_access(long long acc) {
     for (unsigned int i = 0; i < cache.CACHE_LINES; i++) {
         if (set->lines[i].valid && set->lines[i].tag == tag) {
             set->lines[i].last_used = cache.time;
-            return cache.miss_count; // Hit
+            return; // Hit
         }
     }
 
@@ -97,11 +97,11 @@ int sim_access(long long acc) {
     set->lines[replaceIndex].valid = 1;
     set->lines[replaceIndex].tag = tag;
     set->lines[replaceIndex].last_used = cache.time;
-    return cache.miss_count;
 }
 
 int sim_finish(void) {
     int misses = cache.miss_count;
+    cache.miss_count = 0;
     for (long long i = 0; i < cache.SETS; i++) {
         free(cache.sets[i].lines);
     }
